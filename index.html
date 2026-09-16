@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="王毅，西南交通大学2027届电气工程硕士。储能PCS、CHB变流器控制、虚拟阻抗补偿与C2000/RT Box实践。">
+  <title>王毅 Yi Wang · 储能与并网控制</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <noscript><style>.header-inner nav{display:flex}.header-actions,.lab-layout,.project-filters{display:none}</style></noscript>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('wy-theme')||'dark'}catch(e){}</script>
+  <script src="mpc-demo.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main" data-en="Skip to content">跳转到正文</a>
+<div class="reading-progress" aria-hidden="true"><span></span></div>
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="#home" aria-label="王毅 Yi Wang 首页" data-en-aria="Yi Wang home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 16h6V7h8v18h8v-9h6"/></svg><span>王毅 <small>YI WANG</small></span></a>
+    <nav id="main-nav" aria-label="主导航" data-en-aria="Main navigation">
+      <a href="#projects" data-en="Projects">项目</a><a href="#lab" data-en="Control lab">控制实验室</a><a href="#research" data-en="Writing">研究写作</a><a href="#about" data-en="About">关于我</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-button command-open" aria-label="快速导航 Ctrl K" data-en-aria="Quick navigation, Ctrl K" title="Ctrl / ⌘ K"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
+      <button id="theme-toggle" class="icon-button" aria-label="切换为浅色主题" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button>
+      <button id="language-toggle" class="language-button" lang="en">EN</button>
+      <button id="menu-toggle" class="icon-button menu-button" aria-label="展开导航" data-en-aria="Toggle navigation" aria-controls="main-nav" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section id="home" class="hero shell">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="tiny-line"></span>POWER ELECTRONICS · CLASS OF 2027</div>
+      <h1><span data-en="Yi Wang">王毅</span><span class="name-latin" aria-hidden="true">Yi Wang.</span></h1>
+      <p class="hero-role" data-en="Energy storage & grid-connected converter control.">储能与并网变流器<br>控制研发。</p>
+      <p class="hero-description" data-en="M.S. student at Southwest Jiaotong University. I work on CHB energy storage control, virtual impedance compensation, and C2000 / RT Box experiments—connecting control models with laboratory practice.">西南交通大学电气工程硕士在读。专注 CHB 储能控制、虚拟阻抗补偿与 C2000 / RT Box 实验，让控制模型与实验实践相互印证。</p>
+      <div class="hero-cta"><a class="button primary" href="#projects"><span data-en="Explore projects">查看项目</span><span aria-hidden="true">↗</span></a><a class="button secondary" href="assets/Wang-Yi-Resume.pdf" download="王毅_储能PCS控制研发.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 17v4h14v-4"/></svg><span data-en="Download résumé · CN">下载一页简历</span></a></div>
+      <div class="hero-tools"><span>PLECS</span><span>FCS-MPC</span><span>TI C2000</span><span>RT Box</span></div>
+    </div>
+    <div class="hero-visual">
+      <div class="visual-title"><span>01 / LAB NOTES</span><span class="mono" data-en="Model → control → experiment">模型 → 控制 → 实验</span></div>
+      <button class="hero-photo image-trigger" data-image="hil" aria-label="放大 RT Box 与 C2000 实验平台" data-en-aria="Enlarge the RT Box and C2000 platform"><img src="assets/4.png" alt="RT Box、TI C2000、示波器和上位机构成的硬件在环实验平台" data-en-alt="Hardware-in-the-loop setup with RT Box, TI C2000, oscilloscope and host computer" fetchpriority="high" width="1035" height="784"><span class="image-hint"><span data-en="View experiment">查看实验平台</span> ↗</span></button>
+      <div class="signal-strip"><svg viewBox="0 0 210 48" aria-hidden="true"><path class="signal-axis" d="M0 24h210"/><path class="signal-trace" d="M0 24C17-5 35-5 52 24s35 29 53 0 35-29 52 0 35 29 53 0"/><path class="signal-step" d="M0 24h13V12h13V3h14v9h13v12h13v12h13v9h14V36h13V24h13V12h13V3h14v9h13v12h13v12h13v9h14V36h12V24"/></svg><span><b data-en="Three-module CHB">三模块 CHB</b><small data-en="Modulation concept · illustrative">调制概念 · 示意</small></span></div>
+      <div class="visual-bottom"><span><b>50 μs</b><small data-en="Controller setting">控制周期配置</small></span><span><b>5 μs</b><small data-en="Plant setting">对象步长配置</small></span><span><b>HIL</b><small data-en="Basic validation">基本功能验证</small></span></div>
+    </div>
+    <a class="scroll-cue" href="#projects"><span>SCROLL TO EXPLORE</span><span aria-hidden="true">↓</span></a>
+  </section>
+
+  <section id="projects" class="section shell">
+    <div class="section-heading"><div><div class="eyebrow">01 / SELECTED WORK</div><h2 data-en="Work, in detail.">把问题，做具体。</h2></div><p data-en="From frequency-domain analysis to converter control and laboratory validation. Each project states what was actually verified.">从频域分析到变流器控制，再到实验验证。每个项目都说明方法、个人工作与验证范围。</p></div>
+    <div class="project-filters" role="group" aria-label="筛选项目" data-en-aria="Filter projects"><button class="filter active" data-filter="all" aria-pressed="true" data-en="All work">全部项目</button><button class="filter" data-filter="control" aria-pressed="false" data-en="Control & simulation">控制与仿真</button><button class="filter" data-filter="hardware" aria-pressed="false" data-en="Hardware & HIL">硬件与 HIL</button></div>
+    <div id="project-count" class="sr-only" aria-live="polite"></div>
+    <div class="project-grid">
+      <article class="project-card project-feature" data-category="control">
+        <div class="project-topline"><span class="project-no">P.01</span><span class="badge" data-en="Industry internship · simulation">企业实习 · 仿真验证</span><time>2026.06 – 2026.09</time></div>
+        <div class="feature-content"><div><p class="company" data-en="Hopewind Electric · Grid-connected systems">禾望电气 · 并网系统部</p><h3 data-en="Making virtual impedance track further.">让虚拟阻抗，<br>跟得更远。</h3><p data-en="I worked on high-frequency impedance simulation for an AC Source, improving phase-lead compensation within the team's existing control scheme and comparing delay, discretization and noise effects.">围绕 AC Source 的高频阻抗模拟，在团队已有方案上改进超前相位补偿，对照分析采样延时、离散化和噪声的影响。</p><div class="tags"><span>Virtual impedance</span><span>Phase compensation</span><span>dq control</span></div></div>
+        <div class="frequency-panel"><div class="panel-caption" data-en="Effective range · system simulation">有效频段 · 系统仿真</div><div class="frequency-metric"><span>200</span><span class="metric-arrow">→</span><strong>≈500</strong><em>Hz</em></div><div class="frequency-scale" aria-label="200 Hz 基线，约500 Hz仿真结果，2 kHz理论目标" data-en-aria="200 Hz baseline, approximately 500 Hz in simulation, 2 kHz theoretical target"><div class="scale-base"></div><div class="scale-achieved"></div><i class="marker base"></i><i class="marker achieved"></i><i class="marker target"></i></div><div class="scale-labels"><span data-en="Baseline">基线</span><span data-en="Simulation">仿真</span><span>2 kHz</span></div><p class="frequency-note" data-en="2 kHz: analytical target, not an achieved system result. Current simulation is limited by switching frequency and computational resources.">2 kHz 为补偿函数理论分析与项目目标。当前系统仿真受开关频率和计算资源约束，已验证至约 500 Hz。</p></div></div>
+        <details><summary><span data-en="My work & validation scope">个人工作与验证范围</span><span class="expand-sign" aria-hidden="true">＋</span></summary><div class="detail-grid"><div><h4 data-en="What I did">我的工作</h4><ul><li data-en="Analyzed sampling and control delay and changed the phase-lead compensation function.">分析采样与控制延时，调整超前相位补偿函数。</li><li data-en="Compared forward/backward Euler, bilinear discretization and dq matrix control.">对比前向/后向欧拉、双线性离散与 dq 矩阵控制。</li><li data-en="Examined common/differential-mode noise, virtual impedance settings and PI parameters through frequency sweeps.">通过扫频分析共模/差模噪声、虚拟阻抗设定与 PI 参数的影响。</li></ul></div><div><h4 data-en="How to read the result">如何理解结果</h4><p data-en="Approximately 500 Hz describes the current simulation condition. It is not a hardware bandwidth rating. Discretization alone brought limited improvement; the effect of derivative compensation on real sampling noise still needs validation.">约 500 Hz 对应当前工况的系统仿真，不是整机实测带宽。单独调整离散形式的改善有限，微分补偿对实际采样噪声的影响仍需进一步验证。</p></div></div></details>
+      </article>
+      <article class="project-card" data-category="control hardware">
+        <div class="project-topline"><span class="project-no">P.02</span><span class="badge" data-en="M.S. research">硕士课题</span><time data-en="2025.09 – Present">2025.09 – 至今</time></div>
+        <button class="project-image image-trigger" data-image="mpc" aria-label="放大 MPC 仿真对比曲线" data-en-aria="Enlarge the MPC simulation comparison"><img src="assets/3.png" alt="MPC电热均衡与传统模式的三组曲线对比" data-en-alt="Three trace pairs comparing MPC electrothermal balancing and conventional operation" loading="lazy"><span class="zoom-indicator" aria-hidden="true">↗</span></button>
+        <h3 data-en="Three modules. Coordinated control.">三模块 CHB，协同控制。</h3><p data-en="PQ and DC-voltage control for traction energy storage, with finite-control-set MPC that considers current tracking, SOC, battery-module temperature and switching changes.">面向牵引储能的 PQ 与直流侧均压控制，研究兼顾电流跟踪、SOC、电池模块温度和开关变动的有限控制集 MPC。</p>
+        <div class="mini-metrics"><span><b>27</b><small data-en="Candidate levels">候选电平组合</small></span><span><b>3</b><small data-en="Cascaded modules">级联模块</small></span><span><b>FCS-MPC</b><small data-en="Multi-objective cost">多目标代价</small></span></div>
+        <details><summary><span data-en="Control design & experiment">控制设计与实验</span><span class="expand-sign" aria-hidden="true">＋</span></summary><div class="detail-body"><p data-en="Implemented 27 candidate-level evaluations, predicted battery-current constraints, DC-capacitor current correction and slow-variable filtering. The temperature term uses battery-module temperature alongside SOC and current error in the multi-objective cost.">实现 27 个候选电平评估、预测电池限流、直流侧电容电流补偿与慢变量滤波。温度项以电池模块温度为状态，与 SOC 和电流误差一起构建多目标代价。</p><p data-en="Built an RT Box / TI C2000 HIL platform for basic system operation; carried out three-module PWM hardware experiments. Complete electro-thermal hardware validation remains ongoing.">搭建 RT Box / TI C2000 半实物平台，完成系统基本功能验证；开展三模块基础 PWM 全实物实验。完整电热控制实物验证持续推进。</p><a class="text-link" href="#lab"><span data-en="Explore a simplified MPC example">体验简化 MPC 示例</span> ↗</a></div></details>
+      </article>
+      <article class="project-card" data-category="hardware">
+        <div class="project-topline"><span class="project-no">P.03</span><span class="badge" data-en="Hardware practice">硬件实践</span><time>2024 – 2026</time></div>
+        <button class="project-image photo image-trigger" data-image="hardware" aria-label="放大三模块H桥实验平台" data-en-aria="Enlarge the three-module H-bridge setup"><img src="assets/5.png" alt="三模块H桥、直流供电、采样、滤波与负载构成的实验平台" data-en-alt="Three-module H-bridge experiment with DC supplies, sensing, filtering and load" loading="lazy"><span class="zoom-indicator" aria-hidden="true">↗</span></button>
+        <h3 data-en="From signals to the bench.">从采样信号，到实验台。</h3><p data-en="DC/AC voltage and AC-current sensing designs, H-bridge and NPC experiments, and a literature-based three-phase NPC rectifier model.">开展直流/交流电压与交流电流检测电路设计，积累 H 桥、NPC 实验经验，并依据文献搭建三相 NPC 整流模型。</p><div class="tags roomy"><span>ePWM / ADC</span><span>LCEDA-Pro</span><span>H-bridge / NPC</span></div>
+        <details><summary><span data-en="Tools & engineering practice">工具与工程实践</span><span class="expand-sign" aria-hidden="true">＋</span></summary><div class="detail-body"><p data-en="Configured TMS320F28379D / RT Box target projects with PLECS Coder, a 50 μs controller period, a 5 μs plant step, and ePWM-triggered ADC sampling. These are engineering settings, not measured execution margins.">通过 PLECS Coder 配置 TMS320F28379D / RT Box 目标工程，控制周期 50 μs、对象步长 5 μs，采用 ePWM 触发 ADC 采样。这些是工程配置，不代表实测运行裕量。</p><p data-en="Sensing work includes schematics and PCB iterations. Basic hardware experiments validate PWM synchronization and control logic; no production or full-load thermal qualification is claimed.">检测电路形成原理图、PCB 与迭代版本；基础实物实验验证 PWM 同步输出和控制逻辑，尚不作量产或满载温循验收结论。</p></div></details>
+      </article>
+    </div>
+  </section>
+
+  <section id="gallery" class="section gallery-section">
+    <div class="shell"><div class="section-heading"><div><div class="eyebrow">02 / INSIDE THE LAB</div><h2 data-en="Models. Signals. Hardware.">模型、信号与实物。</h2></div><p data-en="A closer look at the research material and experimental platforms. Open any image to inspect it.">研究材料与实验平台的真实切片。点击图片，查看细节与验证阶段。</p></div>
+    <div class="gallery-grid">
+      <button class="gallery-item image-trigger" data-image="overview"><div class="gallery-image"><img src="assets/hero.png" alt="牵引供电、级联储能与电热一致性研究示意" data-en-alt="Traction supply, cascaded storage and electro-thermal consistency concept" loading="lazy"></div><span class="gallery-meta"><b data-en="System concept">系统研究示意</b><small data-en="Research scope">研究框架</small><i aria-hidden="true">↗</i></span></button>
+      <button class="gallery-item image-trigger" data-image="device"><div class="gallery-image"><img src="assets/1.png" alt="功率器件多物理场研究图" data-en-alt="Power-device multiphysics research illustration" loading="lazy"></div><span class="gallery-meta"><b data-en="Device modelling">器件建模图示</b><small data-en="Research material">研究材料</small><i aria-hidden="true">↗</i></span></button>
+      <button class="gallery-item image-trigger" data-image="loop"><div class="gallery-image"><img src="assets/2.png" alt="控制器与被控对象通过PWM和ADC连接的闭环结构" data-en-alt="Controller and plant closed-loop structure linked by PWM and ADC" loading="lazy"></div><span class="gallery-meta"><b data-en="Control & plant">控制器与被控对象</b><small data-en="Closed-loop structure">闭环结构</small><i aria-hidden="true">↗</i></span></button>
+      <button class="gallery-item image-trigger" data-image="mpc"><div class="gallery-image"><img src="assets/3.png" alt="MPC电热均衡与传统模式对比曲线" data-en-alt="MPC electrothermal balancing and conventional-mode comparison" loading="lazy"></div><span class="gallery-meta"><b data-en="MPC comparison">MPC 仿真对比</b><small data-en="Control design">控制设计</small><i aria-hidden="true">↗</i></span></button>
+      <button class="gallery-item image-trigger" data-image="hil"><div class="gallery-image photo"><img src="assets/4.png" alt="RT Box与TI C2000半实物平台" data-en-alt="RT Box and TI C2000 HIL platform" loading="lazy"></div><span class="gallery-meta"><b>RT Box + C2000</b><small data-en="Basic HIL validation">HIL 基本功能验证</small><i aria-hidden="true">↗</i></span></button>
+      <button class="gallery-item image-trigger" data-image="hardware"><div class="gallery-image photo"><img src="assets/5.png" alt="三模块H桥基础PWM实验平台" data-en-alt="Three-module H-bridge platform for basic PWM experiments" loading="lazy"></div><span class="gallery-meta"><b data-en="H-bridge experiment">H 桥实物实验</b><small data-en="Basic PWM validation">基础 PWM 验证</small><i aria-hidden="true">↗</i></span></button>
+    </div></div>
+  </section>
+
+  <section id="lab" class="section shell">
+    <div class="section-heading"><div><div class="eyebrow">03 / INTERACTIVE CONTROL LAB</div><h2 data-en="27 choices. One decision.">27 种选择，一次决策。</h2></div><p data-en="Change the weights and inspect how a simplified FCS-MPC selects a level combination. An educational example—not project test data.">调整权重，观察简化 FCS-MPC 如何选择电平组合。这是教学示例，不是项目实测数据。</p></div>
+    <noscript><p class="notice">开启 JavaScript 后可运行交互演示。其余项目和研究内容可正常阅读。 / Enable JavaScript to use the interactive example.</p></noscript>
+    <div class="lab-layout">
+      <div class="lab-controls">
+        <div class="lab-label"><span data-en="Set a priority">选择控制侧重点</span><button id="lab-reset" class="text-button" data-en="Reset">重置</button></div>
+        <div class="preset-group" role="group" aria-label="控制演示预设" data-en-aria="Control demonstration presets"><button data-preset="tracking" class="preset active" data-en="Tracking">电流跟踪</button><button data-preset="balance" class="preset" data-en="Balance">SOC 均衡</button><button data-preset="thermal" class="preset" data-en="Thermal">温度协调</button></div>
+        <label class="range-control" for="current-ref"><span data-en="Current reference">电流参考值</span><output id="current-ref-value" for="current-ref">+4 A</output><input id="current-ref" type="range" min="-6" max="6" step="0.5" value="4"></label>
+        <label class="range-control" for="soc-weight"><span data-en="SOC weight">SOC 均衡权重</span><output id="soc-weight-value" for="soc-weight">0</output><input id="soc-weight" type="range" min="0" max="6" step="0.1" value="0"></label>
+        <label class="range-control" for="temp-weight"><span data-en="Temperature weight">温度协调权重</span><output id="temp-weight-value" for="temp-weight">0</output><input id="temp-weight" type="range" min="0" max="6" step="0.1" value="0"></label>
+        <label class="range-control" for="switch-weight"><span data-en="Switching penalty">开关变动惩罚</span><output id="switch-weight-value" for="switch-weight">0.2</output><input id="switch-weight" type="range" min="0" max="2" step="0.05" value="0.2"></label>
+        <div class="module-readings" id="module-readings"></div>
+        <details class="lab-assumptions"><summary data-en="Model & assumptions">模型与假设</summary><div id="model-assumptions"></div><p data-en="The three modules use levels −1, 0 and +1. This simplified model omits PWM, capacitor dynamics, device losses and closed-loop time evolution. Changing a weight does not always change the selected state.">每个模块有 −1、0、+1 三种电平。本模型不包含 PWM、电容动态、器件损耗或闭环时域演化；权重变化不一定会改变所选状态。</p></details>
+      </div>
+      <div class="lab-result">
+        <div class="lab-result-head"><div><span class="panel-caption" data-en="Selected level combination">当前最优电平组合</span><div id="selected-levels" class="selected-levels">— / — / —</div></div><span class="badge outline" data-en="Educational model">教学模型</span></div>
+        <div id="module-diagram" class="module-diagram" aria-label="三模块输出" data-en-aria="Three-module output"></div>
+        <div class="lab-stats" id="lab-stats" aria-live="polite"></div>
+        <div class="candidate-heading"><span data-en="All 27 candidates">全部 27 个候选</span><span><i class="legend-best"></i><span data-en="Selected">最优</span><i class="legend-excluded"></i><span data-en="Over current limit">超出限流</span></span></div>
+        <div id="candidate-grid" class="candidate-grid" role="group" aria-label="候选电平组合" data-en-aria="Candidate level combinations" aria-describedby="candidate-help"></div>
+        <div id="candidate-detail" class="candidate-detail" aria-live="polite"></div>
+        <p id="candidate-help" class="lab-footnote" data-en="Click a candidate, or use Tab and Enter, to inspect predicted current and cost terms. Arrow keys also move between candidates. Lower feasible cost is better; states over the current limit are excluded.">点击候选，或用 Tab 与回车，查看预测电流与代价分项；也支持方向键切换。可行候选中总代价越低越优，超出限流的状态不参与最优选择。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="research" class="section writing-section"><div class="shell">
+    <div class="section-heading"><div><div class="eyebrow">04 / RESEARCH WRITING</div><h2 data-en="Questions worth following.">持续追问，持续写作。</h2></div><p data-en="Current manuscripts and research interests. Draft status is shown explicitly.">围绕牵引储能与多能微网展开的研究写作。以下均为初稿阶段。</p></div>
+    <article class="writing-row"><span class="writing-index">01</span><div><div class="writing-status" data-en="Research manuscript · draft">研究论文 · 初稿</div><h3>Transformer-less Modular Cascaded H-Bridge Energy Storage System for AC Traction Networks</h3><p data-en="Traction energy storage, bidirectional energy flow, DC energy balancing and reactive power control. Experiments and the manuscript continue to develop.">围绕牵引储能、双向能量流、直流侧能量均衡与无功调控展开，持续完善实验与论文内容。</p></div><span class="writing-kind">CHB / ESS</span></article>
+    <article class="writing-row"><span class="writing-index">02</span><div><div class="writing-status" data-en="Collaborative review · draft under revision">合作综述 · 初稿修订中</div><h3>AI-driven Emerging Hierarchical Energy Management for Multi-Energy Microgrids: Concept, Challenges and Trends</h3><p data-en="Compares AI-assisted tasks across primary, secondary and tertiary energy management, with attention to constraints, cross-level coordination and the scope of validation.">比较 AI 在一次、二次、三次层级能量管理中的决策任务，关注约束处理、跨层协调与验证范围。</p></div><span class="writing-kind">AI / EMS</span></article>
+    <div class="research-note"><span class="note-number">↳</span><p data-en="Also following converter reliability, active thermal control and wind-power frequency stability—connecting device behaviour with system-level operation.">同时关注变流器可靠性、主动热控制与风电频率稳定性，理解器件行为与系统运行之间的联系。</p></div>
+  </div></section>
+
+  <section id="about" class="section shell">
+    <div class="section-heading"><div><div class="eyebrow">05 / A LITTLE ABOUT ME</div><h2 data-en="Curious about how things work.">喜欢弄清楚，也喜欢动手。</h2></div><p data-en="My path runs from mechatronics to electrical engineering. Modelling and hands-on debugging are how I learn.">从机械电子走向电气工程。建模、动手和反复调试，是我理解问题的方式。</p></div>
+    <div class="about-layout"><div class="education" id="education"><article><span class="education-date">2024.09 — 2027.07</span><h3 data-en="Southwest Jiaotong University">西南交通大学</h3><p data-en="M.S. in Electrical Engineering · expected 2027">电气工程硕士 · 预计 2027 年毕业</p><small data-en="Power electronics and electric drives · Advisor: Prof. Yanbo Wang">电力电子与电力传动方向 · 导师：王砚帛教授</small></article><article><span class="education-date">2020.09 — 2024.07</span><h3 data-en="Chongqing Jiaotong University">重庆交通大学</h3><p data-en="B.Eng. in Mechatronic Engineering">机械电子工程 · 工学学士</p><small data-en="Major rank 23 / 237">专业排名 23 / 237</small></article><div class="about-extra"><span>CET-6</span><span data-en="Graduate party-branch secretary">研究生党支部书记</span></div></div>
+    <div class="skills-panel" id="skills"><h3 data-en="My working toolkit">常用的工具与方法</h3><div class="skill-row"><span data-en="Control">控制</span><p>PQ · FCS-MPC · SOC · PLL / SOGI · PR · <span data-en="Virtual impedance">虚拟阻抗</span></p></div><div class="skill-row"><span data-en="Models">模型</span><p>PLECS · MATLAB / Simulink · <span data-en="Electro-thermal analysis">电热分析</span></p></div><div class="skill-row"><span data-en="Lab">实验</span><p>TI C2000 · RT Box · PLECS Coder · ePWM / ADC</p></div><div class="skill-row"><span data-en="Hardware">硬件</span><p>LCEDA-Pro · PCB · <span data-en="Sensing & signal conditioning">采样与信号调理</span></p></div><p class="skills-note" data-en="I use project details to explain experience, rather than percentage skill ratings.">能力放在具体项目里讲清楚，持续把学习变成可验证的实践。</p></div></div>
+    <div class="life-heading"><span class="eyebrow">OFF THE BENCH</span><span data-en="A life beyond waveforms.">波形之外，也有生活。</span></div>
+    <div class="life-grid" id="life"><article><span class="life-symbol" aria-hidden="true">01</span><h3 data-en="One more run.">再开一局。</h3><p data-en="The Binding of Isaac, Resident Evil 4, and League of Legends with friends. A different kind of feedback loop after the lab.">《以撒的结合》《生化危机 4》，还有和朋友一起的《英雄联盟》。实验之外，也喜欢游戏里不断尝试的过程。</p></article><article><span class="life-symbol" aria-hidden="true">02</span><h3 data-en="Take it apart. Figure it out.">折腾，也是学习。</h3><p data-en="PC building, device flashing and system maintenance. I enjoy tracing a problem back to its cause and getting things working again.">装机、刷机、系统维护。喜欢顺着线索找原因，也享受把设备重新调好的瞬间。</p></article><article><span class="life-symbol" aria-hidden="true">03</span><h3 data-en="Stay curious.">继续拓宽边界。</h3><p data-en="Batteries, BMS, thermal management and SiC devices: following the connections around power conversion, one question at a time.">继续学习动力电池、BMS、热管理与 SiC 器件。沿着电力电子周围的问题，一点点拓宽理解。</p></article></div>
+  </section>
+
+  <section id="updates" class="updates shell"><div class="eyebrow">RECENT NOTES</div><div class="updates-list"><p><time>2026.09</time><span data-en="Revising the AI-based hierarchical energy-management review.">持续修订 AI 分层能量管理英文综述。</span></p><p><time>2026.08</time><span data-en="Documented AC Source compensation analysis: approximately 500 Hz in system simulation.">整理 AC Source 补偿分析：系统仿真有效频段提升至约 500 Hz。</span></p><p><time>2026.05</time><span data-en="Presented thesis progress, HIL basic validation and three-module PWM experiments.">完成课题中期汇报，展示 HIL 基本功能与三模块 PWM 实验。</span></p></div></section>
+
+  <section id="contact" class="contact-section"><div class="shell contact-inner"><div><div class="eyebrow">LET’S CONNECT</div><h2 data-en="Let’s talk control. And what comes next.">聊聊控制，<br>也聊聊新的可能。</h2><p data-en="Open to 2027 graduate opportunities in energy-storage PCS and grid-connected converter control.">期待 2027 届储能 PCS、并网变流器控制研发机会，<br>也欢迎交流电力电子与新能源问题。</p></div><div class="contact-actions"><a class="email-link" href="mailto:1076103542@qq.com">1076103542@qq.com <span aria-hidden="true">↗</span></a><div><button id="copy-email" class="button secondary"><span data-en="Copy email">复制邮箱</span></button><a class="text-link" href="assets/Wang-Yi-Resume.pdf" download="王毅_储能PCS控制研发.pdf"><span data-en="Résumé · PDF · CN">简历 PDF</span> ↓</a></div></div></div></section>
+</main>
+<footer class="shell"><span>© 2026 <span data-en="Yi Wang">王毅</span></span><span data-en="Power electronics. Hands-on curiosity.">电力电子 · 持续探索</span><a href="#home" data-en="Back to top ↑">回到顶部 ↑</a></footer>
+
+<dialog id="lightbox" class="lightbox" aria-labelledby="lightbox-title"><div class="lightbox-top"><span id="lightbox-counter" class="mono"></span><button class="icon-button close-lightbox" aria-label="关闭图片" data-en-aria="Close image">×</button></div><div class="lightbox-image-wrap"><img id="lightbox-image" alt=""><button id="lightbox-prev" class="lightbox-arrow prev" aria-label="上一张" data-en-aria="Previous image">←</button><button id="lightbox-next" class="lightbox-arrow next" aria-label="下一张" data-en-aria="Next image">→</button></div><div class="lightbox-caption"><h2 id="lightbox-title"></h2><p id="lightbox-description"></p><small data-en="Arrow keys to browse · Esc to close">方向键切换 · Esc 关闭</small></div></dialog>
+<dialog id="command-dialog" class="command-dialog" aria-labelledby="command-title"><div class="command-top"><h2 id="command-title" data-en="Go straight to…">直接前往…</h2><button class="icon-button close-command" aria-label="关闭导航" data-en-aria="Close navigation">×</button></div><label class="sr-only" for="command-search" data-en="Search sections">搜索页面内容</label><input id="command-search" type="search" placeholder="搜索项目、MPC、简历…" data-en-placeholder="Search projects, MPC, résumé…" autocomplete="off"><div id="command-results"></div><p class="command-tip" data-en="Tab to navigate · Enter to open · Esc to close">Tab 选择 · Enter 打开 · Esc 关闭</p></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

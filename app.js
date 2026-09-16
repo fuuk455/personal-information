@@ -1,0 +1,91 @@
+(() => {
+  'use strict';
+  const $ = selector => document.querySelector(selector);
+  const $$ = selector => [...document.querySelectorAll(selector)];
+  const storage = { get(key){try{return localStorage.getItem(key)}catch{return null}}, set(key,value){try{localStorage.setItem(key,value)}catch{}} };
+  let language = storage.get('wy-language') === 'en' ? 'en' : 'zh';
+  const t = (zh,en) => language === 'en' ? en : zh;
+  const staticTranslations = $$('[data-en]').map(el => ({el, zh:el.innerHTML, en:el.dataset.en}));
+  const attributeTranslations = ['aria-label','alt','placeholder'].flatMap(attr => $$(`[data-en-${attr === 'aria-label' ? 'aria' : attr}]`).map(el => ({el,attr,zh:el.getAttribute(attr),en:el.getAttribute(`data-en-${attr === 'aria-label' ? 'aria' : attr}`)})));
+  const themeButton = $('#theme-toggle');
+  const lightbox = $('#lightbox');
+  const commandDialog = $('#command-dialog');
+  let toastTimer;
+  function toast(message){clearTimeout(toastTimer);$('#toast').textContent=message;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2600)}
+  function updateThemeLabel(){const dark=document.documentElement.dataset.theme==='dark';themeButton.setAttribute('aria-pressed',String(!dark));themeButton.setAttribute('aria-label',dark?t('切换为浅色主题','Switch to light theme'):t('切换为深色主题','Switch to dark theme'))}
+  themeButton.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;storage.set('wy-theme',next);updateThemeLabel()});
+  function setLanguage(next){language=next;document.documentElement.lang=next==='en'?'en':'zh-CN';staticTranslations.forEach(({el,zh,en})=>{if(next==='en')el.textContent=en;else el.innerHTML=zh});attributeTranslations.forEach(({el,attr,zh,en})=>el.setAttribute(attr,next==='en'?en:zh));$('#language-toggle').textContent=next==='en'?'中文':'EN';$('#language-toggle').lang=next==='en'?'zh-CN':'en';$('#language-toggle').setAttribute('aria-label',next==='en'?'切换至中文':'Switch to English');document.title=t('王毅 Yi Wang · 储能与并网控制','Yi Wang · Energy Storage & Converter Control');storage.set('wy-language',next);updateThemeLabel();updateProjectCount();renderLab();if(lightbox.open)renderImage();if(commandDialog.open)renderCommands()}
+  $('#language-toggle').addEventListener('click',()=>setLanguage(language==='en'?'zh':'en'));
+
+  // Native navigation remains usable when scripting is unavailable.
+  const menuButton=$('#menu-toggle');
+  function closeMenu(){$('#main-nav').classList.remove('open');menuButton.setAttribute('aria-expanded','false')}
+  menuButton.addEventListener('click',()=>{const open=$('#main-nav').classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open))});
+  $$('#main-nav a').forEach(a=>a.addEventListener('click',closeMenu));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+  window.addEventListener('resize',()=>{if(innerWidth>740)closeMenu()},{passive:true});
+  const navObserver=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){$$('#main-nav a').forEach(a=>a.classList.toggle('active',a.hash==='#'+entry.target.id))}}},{rootMargin:'-18% 0px -55% 0px',threshold:0});
+  ['projects','lab','research','about'].forEach(id=>navObserver.observe(document.getElementById(id)));
+  let progressScheduled=false;
+  function updateProgress(){const extent=document.documentElement.scrollHeight-innerHeight;$('.reading-progress span').style.width=(extent>0?Math.min(100,scrollY/extent*100):0)+'%';progressScheduled=false}
+  window.addEventListener('scroll',()=>{if(!progressScheduled){progressScheduled=true;requestAnimationFrame(updateProgress)}},{passive:true});window.addEventListener('resize',updateProgress,{passive:true});updateProgress();
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const reveal=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('enter');reveal.unobserve(entry.target)}}),{threshold:.07});$$('.section-heading,.project-card,.gallery-item,.writing-row,.life-grid article').forEach(el=>reveal.observe(el))}
+
+  // Filter project categories; filters never alter the underlying claims.
+  function updateProjectCount(){const count=$$('.project-card').filter(el=>!el.hidden).length;$('#project-count').textContent=t(`显示 ${count} 个项目`,`${count} projects shown`)}
+  $$('.filter').forEach(button=>button.addEventListener('click',()=>{const filter=button.dataset.filter;$$('.filter').forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});$$('.project-card').forEach(card=>{card.hidden=filter!=='all'&&!card.dataset.category.split(' ').includes(filter)});updateProjectCount();updateProgress()}));
+  $$('details').forEach(el=>el.addEventListener('toggle',updateProgress));
+
+  const images=[
+    {id:'overview',src:'assets/hero.png',zh:'系统研究示意',en:'System research concept',captionZh:'牵引供电系统与储能模块电热一致性的研究框架，展示系统连接关系与模块间协同控制的研究对象。',captionEn:'Research concept linking traction power supply and electro-thermal consistency in storage modules, showing system connections and the scope of coordinated control.'},
+    {id:'device',src:'assets/1.png',zh:'功率模块温度分布',en:'Power-module temperature field',captionZh:'功率模块芯片与键合线结构的三维温度分布研究图，从器件尺度观察电热耦合与温度分布。',captionEn:'Three-dimensional temperature-field illustration of chips and bond wires, exploring electro-thermal coupling and temperature distribution at device level.'},
+    {id:'loop',src:'assets/2.png',zh:'PWM / ADC 接口建模',en:'PWM / ADC interface model',captionZh:'控制器与被控对象通过 PWM 捕获及 ADC 反馈连接的闭环结构，展示控制侧与对象侧的信号接口。',captionEn:'A controller and plant linked through PWM capture and ADC feedback, showing the signal interfaces between the two sides.'},
+    {id:'mpc',src:'assets/3.png',zh:'MPC 与传统模式的曲线对比',en:'MPC and conventional-mode comparison',captionZh:'MPC 电热均衡与传统模式下三组曲线的对比图，用于观察不同控制策略下的响应趋势。',captionEn:'Three trace pairs comparing MPC electro-thermal balancing with conventional operation, providing a qualitative view of the response trends.'},
+    {id:'hil',src:'assets/4.png',zh:'RT Box + TI C2000 实验平台',en:'RT Box + TI C2000 platform',captionZh:'控制器硬件在环平台，包括 TI C2000、PLECS RT Box、示波器与上位机。已开展 DSP 控制、PWM 输出及三模块系统基本功能验证。',captionEn:'Controller HIL setup with TI C2000, PLECS RT Box, oscilloscope and host computer. Used for DSP control, PWM output and basic three-module system validation.'},
+    {id:'hardware',src:'assets/5.png',zh:'多 H 桥实物实验平台',en:'Multi-H-bridge hardware platform',captionZh:'平台包含三个 H 桥、LC 滤波、电压采样、供电与控制接口，用于基础 PWM 实验和控制逻辑验证。完整电热算法的实物验证仍在推进。',captionEn:'A three-H-bridge platform with LC filtering, sensing, supplies and control interfaces, used for basic PWM and control-logic experiments. Complete electro-thermal hardware validation remains ongoing.'}
+  ];
+  let imageIndex=0;
+  function renderImage(){const item=images[imageIndex];$('#lightbox-image').src=item.src;$('#lightbox-image').alt=t(item.zh,item.en);$('#lightbox-title').textContent=t(item.zh,item.en);$('#lightbox-description').textContent=t(item.captionZh,item.captionEn);$('#lightbox-counter').textContent=String(imageIndex+1).padStart(2,'0')+' / '+String(images.length).padStart(2,'0')}
+  function moveImage(direction){imageIndex=(imageIndex+direction+images.length)%images.length;renderImage()}
+  $$('.image-trigger').forEach(button=>button.addEventListener('click',()=>{imageIndex=Math.max(0,images.findIndex(item=>item.id===button.dataset.image));renderImage();lightbox.showModal()}));
+  $('.close-lightbox').addEventListener('click',()=>lightbox.close());$('#lightbox-prev').addEventListener('click',()=>moveImage(-1));$('#lightbox-next').addEventListener('click',()=>moveImage(1));
+  lightbox.addEventListener('keydown',event=>{if(event.key==='ArrowRight'){event.preventDefault();moveImage(1)}if(event.key==='ArrowLeft'){event.preventDefault();moveImage(-1)}});
+  [lightbox,commandDialog].forEach(dialog=>{dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()});dialog.addEventListener('close',()=>{document.body.style.overflow=''});});
+  new MutationObserver(()=>{document.body.style.overflow=lightbox.open||commandDialog.open?'hidden':''}).observe(document.body,{attributes:true,subtree:true,attributeFilter:['open']});
+
+  // Quick navigation contains local links only; search stays in the browser.
+  const commands=[
+    {href:'#projects',zh:'项目 · AC Source / CHB / 硬件',en:'Projects · AC Source / CHB / hardware',keywords:'500Hz pcs hopewind 禾望 mpc'},
+    {href:'#gallery',zh:'实验图集 · 图片放大',en:'Experiment gallery · enlarge images',keywords:'照片 波形 photo hil rtbox'},
+    {href:'#lab',zh:'控制实验室 · 27 候选 MPC',en:'Control lab · 27-candidate MPC',keywords:'交互 实验 权重 soc temperature'},
+    {href:'#research',zh:'研究写作 · 英文初稿',en:'Research writing · draft manuscripts',keywords:'论文 ai microgrid paper review'},
+    {href:'#about',zh:'关于我 · 教育与技能',en:'About · education and skills',keywords:'西南交大 学校 经历 tools'},
+    {href:'#contact',zh:'联系 · 邮箱',en:'Contact · email',keywords:'mail 1076103542'},
+    {href:'assets/Wang-Yi-Resume.pdf',zh:'下载一页简历 · 中文 PDF',en:'Download résumé · Chinese PDF',keywords:'cv resume 简历 下载',download:true}
+  ];
+  function renderCommands(){const query=$('#command-search').value.trim().toLowerCase();const matches=commands.filter(item=>(item.zh+' '+item.en+' '+item.keywords).toLowerCase().includes(query));const container=$('#command-results');container.replaceChildren();if(!matches.length){const p=document.createElement('p');p.textContent=t('没有匹配内容，试试“项目”或“MPC”。','No match. Try “projects” or “MPC”.');container.append(p)}matches.forEach(item=>{const link=document.createElement('a');link.href=item.href;link.textContent=t(item.zh,item.en);const arrow=document.createElement('span');arrow.textContent=item.download?'↓':'↗';arrow.setAttribute('aria-hidden','true');link.append(arrow);if(item.download)link.download='Wang-Yi-Resume.pdf';link.addEventListener('click',()=>commandDialog.close());container.append(link)})}
+  function openCommands(){if(lightbox.open)return;$('#command-search').value='';renderCommands();commandDialog.showModal();$('#command-search').focus()}
+  $('.command-open').addEventListener('click',openCommands);$('.close-command').addEventListener('click',()=>commandDialog.close());$('#command-search').addEventListener('input',renderCommands);$('#command-search').addEventListener('keydown',event=>{if(event.key==='Enter'){const first=$('#command-results a');if(first){event.preventDefault();first.click()}}});
+  document.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k'){event.preventDefault();if(commandDialog.open)commandDialog.close();else openCommands()}});
+  $('#copy-email').addEventListener('click',async()=>{const email='1076103542@qq.com';try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(email)}else{const input=document.createElement('textarea');input.value=email;input.style.position='fixed';input.style.left='-9999px';document.body.append(input);input.select();const success=document.execCommand('copy');input.remove();if(!success)throw new Error('copy failed')}toast(t('邮箱已复制','Email copied'))}catch{toast(t('未能自动复制，请直接选择邮箱文字。','Automatic copy failed. Select the email text to copy it.'))}});
+
+  // Educational, independent MPC model. It never executes the project code.
+  const model=window.MPCDemo;
+  let params=model?model.createParams():null;
+  if(params)params.maxCurrent=5;
+  let latestResult=null,inspectedId=null;
+  const presetMap={tracking:'current',balance:'soc',thermal:'temperature'};
+  const sliders=[['current-ref','currentRef',null],['soc-weight',null,'soc'],['temp-weight',null,'temperature'],['switch-weight',null,'switching']];
+  const signed=value=>value>0?'+'+value:value<0?'−'+Math.abs(value):'0';
+  const fmt=(value,digits=2)=>Number(value).toFixed(digits).replace(/\.00$/,'');
+  function syncSliders(){if(!params)return;sliders.forEach(([id,key,weight])=>{const value=weight?params.weights[weight]:params[key];$('#'+id).value=value;$('#'+id+'-value').textContent=weight?fmt(value,2):signed(value)+' A'});$$('.preset').forEach(button=>{const p=model.presets.find(item=>item.id===presetMap[button.dataset.preset]);const active=model.termKeys.every(key=>Math.abs(p.weights[key]-params.weights[key])<1e-8);button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active))})}
+  function renderCandidateDetail(){if(!latestResult)return;const candidate=latestResult.candidates.find(item=>item.id===inspectedId)||latestResult.selected;if(!candidate)return;const status=candidate.feasible?(candidate.selected?t('本轮最优','Selected'):t('可行','Feasible')):t('超过 5 A 交流电流限制','Exceeds the 5 A AC-current limit');const costs=candidate.weightedCosts;$('#candidate-detail').innerHTML=`<strong>[ ${candidate.levels.map(signed).join(' / ')} ] · ${status}</strong><br>${t('预测电流','Predicted current')} ${fmt(candidate.predictedCurrent)} A · ${t('总代价','Total cost')} ${fmt(candidate.totalCost,3)}<br>${t('加权分项：电流','Weighted terms: current')} ${fmt(costs.current,3)} / SOC ${fmt(costs.soc,3)} / ${t('温度','thermal')} ${fmt(costs.temperature,3)} / ${t('开关','switching')} ${fmt(costs.switching,3)}`;$$('.candidate').forEach(button=>{const active=Number(button.dataset.id)===candidate.id;button.classList.toggle('inspected',active);button.setAttribute('aria-pressed',String(active));button.tabIndex=0})}
+  function renderLab(){if(!model){$('#lab-stats').textContent=t('演示未能加载，请确认 mpc-demo.js 与网页位于同一文件夹。','Demo unavailable. Keep mpc-demo.js alongside the page.');return}syncSliders();latestResult=model.evaluate(params);const selected=latestResult.selected;inspectedId=selected?selected.id:null;$('#selected-levels').textContent=selected?selected.levels.map(signed).join(' / '):t('无可行候选','No feasible state');$('#module-readings').replaceChildren();params.soc.forEach((soc,index)=>{const row=document.createElement('div');row.className='module-reading';row.innerHTML=`<b>MODULE 0${index+1}</b><span>SOC ${Math.round(soc*100)}%</span><span>${params.temperature[index]} °C</span>`;$('#module-readings').append(row)});
+    $('#model-assumptions').innerHTML=t('<p>固定零点快照：初始电流 0 A，交流侧电压 0 V。三个模块各 100 V，L = 5 mH，交流电流上限 5 A；电流跟踪权重固定为 5。</p><p>电流采用 100 μs 单步预测；SOC 与温度采用独立 10 ms 恒流预览。各项代价在本轮 27 个候选间归一化后加权，分数不可跨工况比较。这里的电平变化不等于实际晶体管开关次数。</p>','<p>Fixed zero-point snapshot: initial current 0 A and grid voltage 0 V. Each module is 100 V, L = 5 mH, and the AC-current limit is 5 A. Current-tracking weight stays at 5.</p><p>Current uses one 100 μs prediction step. SOC and temperature use a separate 10 ms constant-current preview. Costs are normalized across this round’s 27 candidates; scores cannot be compared across scenarios. Level changes are not transistor switching counts.</p>');
+    $('#module-diagram').replaceChildren();if(selected)selected.levels.forEach((level,index)=>{const item=document.createElement('div');item.className='bridge-module'+(level?' is-active':'');item.innerHTML=`<small>MODULE 0${index+1}</small><b>${signed(level*model.model.moduleVoltage)} V</b><span>${t('电平','LEVEL')} ${signed(level)}</span>`;$('#module-diagram').append(item)});
+    $('#lab-stats').innerHTML=selected?`<div class="lab-stat"><span>${t('预测交流电流','Predicted AC current')}</span><b>${fmt(selected.predictedCurrent)} A</b></div><div class="lab-stat"><span>${t('输出电平电压','Output-level voltage')}</span><b>${selected.voltage} V</b></div><div class="lab-stat"><span>${t('可行候选','Feasible candidates')}</span><b>${latestResult.feasibleCount} / 27</b></div>`:t('当前参数下没有可行候选。','No feasible candidate under the current parameters.');
+    const grid=$('#candidate-grid');grid.replaceChildren();const maxCost=Math.max(...latestResult.candidates.map(item=>item.totalCost),1);latestResult.candidates.forEach(candidate=>{const button=document.createElement('button');button.className='candidate'+(candidate.selected?' best':'')+(candidate.feasible?'':' excluded');button.dataset.id=candidate.id;const label=candidate.levels.map(value=>value<0?'−':value>0?'+':'0').join(' ');button.textContent=label+(candidate.selected?' ★':'');button.title=t('模块电平','Module levels')+' ['+candidate.levels.map(signed).join(', ')+'] · '+t('代价','Cost')+' '+fmt(candidate.totalCost,3);button.setAttribute('aria-label',button.title+(candidate.selected?' · '+t('本轮最优','Selected'):'')+(candidate.feasible?'':' · '+t('电流超限','Current limit exceeded')));const bar=document.createElement('span');bar.className='candidate-score';bar.style.width=(100*candidate.totalCost/maxCost)+'%';bar.setAttribute('aria-hidden','true');button.append(bar);button.addEventListener('click',()=>{inspectedId=candidate.id;renderCandidateDetail()});grid.append(button)});renderCandidateDetail();
+  }
+  if(model){const ranges=[model.ui.currentRef,model.ui.socWeight,model.ui.temperatureWeight,model.ui.switchingWeight];sliders.forEach(([id,key,weight],index)=>{const input=$('#'+id);['min','max','step'].forEach(attr=>input[attr]=ranges[index][attr]);input.addEventListener('input',()=>{const value=Number(input.value);if(weight)params.weights[weight]=value;else params[key]=value;renderLab()})});$$('.preset').forEach(button=>button.addEventListener('click',()=>{const p=model.presets.find(item=>item.id===presetMap[button.dataset.preset]);params.weights={...p.weights};renderLab()}));$('#lab-reset').addEventListener('click',()=>{params=model.createParams();params.maxCurrent=5;renderLab()});$('#candidate-grid').addEventListener('keydown',event=>{const columns=getComputedStyle($('#candidate-grid')).gridTemplateColumns.split(' ').length;const directions={ArrowRight:1,ArrowLeft:-1,ArrowDown:columns,ArrowUp:-columns};if(!Object.hasOwn(directions,event.key)&&event.key!=='Home'&&event.key!=='End')return;event.preventDefault();let next=Number(event.target.closest('.candidate')?.dataset.id??inspectedId??0);if(event.key==='Home')next=0;else if(event.key==='End')next=26;else next=(next+directions[event.key]+27)%27;inspectedId=next;renderCandidateDetail();$(`.candidate[data-id="${next}"]`).focus()})}
+  setLanguage(language);
+})();
